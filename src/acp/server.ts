@@ -24,7 +24,7 @@ function stdoutWritable(): WritableStream<Uint8Array> {
 /** Identity parser for raw (non-builtin) ACP methods. */
 const raw = <T>() => ({ parse: (p: unknown) => p as T });
 
-type SetSessionModeParams = { sessionId?: string; modeId?: string };
+
 type SetSessionModelParams = { sessionId?: string; modelId?: string };
 
 export function runAcp() {
@@ -90,7 +90,7 @@ export function runAcp() {
 		)
 		// Compatibility endpoints used by clients that predate the ACP
 		// session/set_config_option method, including Paseo.
-		.onRequest("session/set_mode", raw<SetSessionModeParams>(), async (ctx) => {
+		.onRequest(methods.agent.session.setMode, async (ctx) => {
 			await agentImpl.setConfigOption({
 				sessionId: ctx.params.sessionId,
 				configId: "mode",
