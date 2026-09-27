@@ -52,7 +52,6 @@ export function buildAgyArgs(opts: AgyArgsOptions): string[] {
 	for (const dir of opts.additionalDirs ?? []) {
 		args.push("--add-dir", dir);
 	}
-	if (opts.extraArgs?.length) args.push(...opts.extraArgs);
 	if (opts.conversationId) args.push("--conversation", opts.conversationId);
 	if (opts.modelId) args.push("--model", opts.modelId);
 	if (opts.permissionMode && BYPASS_MODES.has(opts.permissionMode)) {
@@ -63,6 +62,7 @@ export function buildAgyArgs(opts: AgyArgsOptions): string[] {
 		args.push("--dangerously-skip-permissions");
 	}
 	args.push("--print-timeout", "0");
+	if (opts.extraArgs?.length) args.push(...opts.extraArgs);
 	args.push("-p", opts.prompt);
 	return args;
 }

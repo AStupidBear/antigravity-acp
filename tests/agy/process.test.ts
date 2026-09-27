@@ -96,7 +96,7 @@ describe("agy/process.ts", () => {
 			]);
 		});
 
-		it("should add extraArgs", () => {
+		it("should add extraArgs at the end to allow overriding preceding flags", () => {
 			const args = buildAgyArgs({
 				workingDir: "/cwd",
 				extraArgs: ["--foo", "bar"],
@@ -108,11 +108,33 @@ describe("agy/process.ts", () => {
 			expect(args).toEqual([
 				"--add-dir",
 				"/cwd",
-				"--foo",
-				"bar",
 				"--dangerously-skip-permissions",
 				"--print-timeout",
 				"0",
+				"--foo",
+				"bar",
+				"-p",
+				"hello",
+			]);
+		});
+
+		it("should allow extraArgs to override print-timeout or other options", () => {
+			const args = buildAgyArgs({
+				workingDir: "/cwd",
+				extraArgs: ["--print-timeout", "10m"],
+				conversationId: null,
+				modelId: null,
+				permissionMode: null,
+				prompt: "hello",
+			});
+			expect(args).toEqual([
+				"--add-dir",
+				"/cwd",
+				"--dangerously-skip-permissions",
+				"--print-timeout",
+				"0",
+				"--print-timeout",
+				"10m",
 				"-p",
 				"hello",
 			]);
